@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build",
+			"type": "shell",
+			"group": "build",
+			"command": "cd ${workspaceRoot}/build && cmake ../ && make"
+		},
+		{
+			"label": "run",
+			"type": "shell",
+			"group": "none",
+			"command": "cd ${workspaceRoot}/build && ./main",
+			"problemMatcher": []
+		}
+	]
+}
