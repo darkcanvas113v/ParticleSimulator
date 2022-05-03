@@ -19,7 +19,7 @@ void game::init_board(
 
     float angle = utils::randomAngle();
 
-    world::create_particle(pos_x, pos_y, vec[i]*cos(angle), vec[i]*sin(angle));
+    world::create_particle(Vector2{pos_x, pos_y}, Vector2{vec[i]*cos(angle), vec[i]*sin(angle)});
   }
 }
 
@@ -35,6 +35,6 @@ void game::render_loop() {
   auto renderables = world::get_renderable_entities();
 
   renderables.each([](flecs::entity e, Position& p, Render r) {
-    window::draw_circle(p.x, p.y);
+    window::draw_circle(p.current.x, p.current.y);
   });
 }

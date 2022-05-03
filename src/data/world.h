@@ -11,10 +11,8 @@ namespace world {
   void destroy();
 
   void create_particle(
-    float pos_x,
-    float pos_y,
-    float vel_x,
-    float vel_y
+    Vector2 pos,
+    Vector2 velocity
   );
 
   void progress(float dt);

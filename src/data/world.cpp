@@ -1,5 +1,6 @@
 #include "world.h"
 #include "../logic/systems.h"
+#include "../utils.h"
 
 flecs::world mWorld;
 
@@ -9,15 +10,13 @@ void world::init() {
 }
 
 void world::create_particle(
-  float pos_x,
-  float pos_y,
-  float vel_x,
-  float vel_y
+  Vector2 pos,
+  Vector2 velocity
 ) {
   auto e = mWorld.entity()
     .add<Render>()
-    .set<Position>({pos_x, pos_y})
-    .set<Velocity>({vel_x, vel_y});
+    .set<Position>({pos})
+    .set<Velocity>({velocity});
 }
 
 void world::clear() {

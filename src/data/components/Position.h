@@ -1,4 +1,8 @@
+#pragma once
+#include <rtmath.h>
+
 struct Position {
-  float x, y;
-  float future_x, future_y;
+  Vector2 current;
+  Vector2 future;
+  Vector2 movement_vec;
 };

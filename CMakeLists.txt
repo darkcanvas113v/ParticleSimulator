@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(ParticleSimulator VERSION 0.0)
 
 add_subdirectory(libs/flecs)
+add_subdirectory(libs/rtmath)
 
 add_executable(ParticleSimulator
   src/main.cpp
@@ -17,12 +18,12 @@ add_executable(ParticleSimulator
   src/logic/MovementSystem.cpp
 
   src/data/world.cpp
-
 )
 
 find_package(SDL2 REQUIRED)
 
 target_link_libraries(ParticleSimulator
   PRIVATE SDL2 SDL2main SDL2_image
-  PUBLIC flecs
+  PRIVATE flecs
+  PRIVATE rtmath
 )

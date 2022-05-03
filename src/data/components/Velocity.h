@@ -1,3 +1,6 @@
+#pragma once
+#include <rtmath.h>
+
 struct Velocity {
-  float x, y;
+  Vector2 vec;
 };
