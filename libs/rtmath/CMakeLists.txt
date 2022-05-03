@@ -9,5 +9,7 @@ add_library(rtmath STATIC src/Vector2.cpp)
 
 target_include_directories(rtmath
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+  PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )

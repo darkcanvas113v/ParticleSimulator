@@ -34,3 +34,7 @@ Vector2 Vector2::normalized() {
   float l = length();
   return {x / l, y / l};
 }
+
+float Vector2::dot(const Vector2& vec) {
+  return x * vec.x + y * vec.y;
+}

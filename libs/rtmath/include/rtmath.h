@@ -12,4 +12,6 @@ struct Vector2 {
     float lengthSqrd();
     float length();
     Vector2 normalized();
+
+    float dot(const Vector2& vec);
 };
