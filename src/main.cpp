@@ -19,7 +19,7 @@ int main(int argc, char* args[]) {
     return EXIT_FAILURE;
   }
 
-  game::init_board(5, 0);
+  game::init_board(5, 50);
 
   Uint32 lastRenderUpdateTimeStamp = SDL_GetTicks();
   Uint32 lastPhysicsUpdateTimeStamp = SDL_GetTicks();
@@ -34,13 +34,13 @@ int main(int argc, char* args[]) {
       }
     }
 
-    dt = (SDL_GetTicks() - lastPhysicsUpdateTimeStamp) / 1000;
+    dt = (float)(SDL_GetTicks() - lastPhysicsUpdateTimeStamp) / 1000;
     if (dt > physicsUpdateInterval) {
       game::physics_loop(dt);
       lastPhysicsUpdateTimeStamp = SDL_GetTicks();
     }
 
-    dt = (SDL_GetTicks() - lastRenderUpdateTimeStamp) / 1000;
+    dt = (float)(SDL_GetTicks() - lastRenderUpdateTimeStamp) / 1000;
     if (dt > renderUpdateInterval) {
       window::draw();
       game::render_loop();

@@ -9,8 +9,15 @@ add_subdirectory(libs/flecs)
 add_executable(ParticleSimulator
   src/main.cpp
   src/game.cpp
+  src/utils.cpp
+
   src/view/window.cpp
+
+  src/logic/CollisionSystem.cpp
+  src/logic/MovementSystem.cpp
+
   src/data/world.cpp
+
 )
 
 find_package(SDL2 REQUIRED)

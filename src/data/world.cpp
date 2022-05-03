@@ -1,9 +1,11 @@
 #include "world.h"
+#include "../logic/systems.h"
 
 flecs::world mWorld;
 
 void world::init() {
-  
+  systems::CollisionSystem(&mWorld);
+  systems::MovementSystem(&mWorld);
 }
 
 void world::create_particle(
@@ -19,7 +21,10 @@ void world::create_particle(
 }
 
 void world::clear() {
-  
+  auto all_particles = mWorld.query<>();
+  all_particles.each([](flecs::entity e){
+    e.destruct();
+  });
 }
 
 void world::destroy() {

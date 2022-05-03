@@ -3,17 +3,23 @@
 #include "view/window.h"
 #include <stdlib.h>
 #include "view/def.h"
+#include "utils.h"
+#include <math.h>
 
 void game::init_board(
   int numOfParticles,
   float temperature
 ) {
   world::init();
+
+  auto vec = utils::split_number_in_random_intervals(numOfParticles, temperature * numOfParticles);
   for (int i = 0; i < numOfParticles; i++) {
     float pos_x = std::rand() % (SCREEN_WIDTH - 2*PARTICLE_SIZE) + PARTICLE_SIZE;
     float pos_y = std::rand() % (SCREEN_WIDTH - 2*PARTICLE_SIZE) + PARTICLE_SIZE;
 
-    world::create_particle(pos_x, pos_y, 0, 0);
+    float angle = utils::randomAngle();
+
+    world::create_particle(pos_x, pos_y, vec[i]*cos(angle), vec[i]*sin(angle));
   }
 }
 
