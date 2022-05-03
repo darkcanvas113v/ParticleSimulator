@@ -1,16 +1,29 @@
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "SDL2/SDL.h"
-#include "window.h"
-#include "string"
+#include "view/window.h"
+#include "game.h"
 
 void quit() {
-  close();
+  window::close();
 }
 
+const float physicsUpdateInterval = 1 / 60;
+const float renderUpdateInterval = 1 / 60;
+
 int main(int argc, char* args[]) {
-  if (init() == false) {
+  std::srand(time(0));
+
+  if (window::init() == false) {
     return EXIT_FAILURE;
   }
+
+  game::init_board(5, 0);
+
+  Uint32 lastRenderUpdateTimeStamp = SDL_GetTicks();
+  Uint32 lastPhysicsUpdateTimeStamp = SDL_GetTicks();
+  float dt = 0;
 
   SDL_Event e;
   while(true) {
@@ -20,8 +33,20 @@ int main(int argc, char* args[]) {
         return 0;
       }
     }
-    draw();
-    update();
+
+    dt = (SDL_GetTicks() - lastPhysicsUpdateTimeStamp) / 1000;
+    if (dt > physicsUpdateInterval) {
+      game::physics_loop(dt);
+      lastPhysicsUpdateTimeStamp = SDL_GetTicks();
+    }
+
+    dt = (SDL_GetTicks() - lastRenderUpdateTimeStamp) / 1000;
+    if (dt > renderUpdateInterval) {
+      window::draw();
+      game::render_loop();
+      window::update();
+      lastRenderUpdateTimeStamp = SDL_GetTicks();
+    }
   }
 
   return 0;

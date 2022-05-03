@@ -8,16 +8,14 @@ add_subdirectory(libs/flecs)
 
 add_executable(ParticleSimulator
   src/main.cpp
-  src/window.cpp
+  src/game.cpp
+  src/view/window.cpp
+  src/data/world.cpp
 )
 
 find_package(SDL2 REQUIRED)
 
 target_link_libraries(ParticleSimulator
   PRIVATE SDL2 SDL2main SDL2_image
-  PRIVATE flecs
-)
-
-target_include_directories(ParticleSimulator PUBLIC
-  libs/flecs
+  PUBLIC flecs
 )
