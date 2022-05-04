@@ -5,6 +5,8 @@
 #include "view/def.h"
 #include "utils.h"
 #include <math.h>
+#include <vector>
+#include <stdio.h>
 
 void game::init_board(
   int numOfParticles,
@@ -12,14 +14,41 @@ void game::init_board(
 ) {
   world::init();
 
+  int generation_attempts = 0;
+
+  auto positions = std::vector<Vector2>(numOfParticles);
+
   auto vec = utils::split_number_in_random_intervals(numOfParticles, temperature * numOfParticles);
   for (int i = 0; i < numOfParticles; i++) {
-    float pos_x = std::rand() % (SCREEN_WIDTH - 2*PARTICLE_SIZE) + PARTICLE_SIZE;
-    float pos_y = std::rand() % (SCREEN_WIDTH - 2*PARTICLE_SIZE) + PARTICLE_SIZE;
+    generation_attempts++;
+
+    positions[i] = Vector2 {
+      (float)(std::rand() % (SCREEN_WIDTH - 2*PARTICLE_SIZE) + PARTICLE_SIZE), 
+      (float)(std::rand() % (SCREEN_HEIGHT - 2*PARTICLE_SIZE) + PARTICLE_SIZE)
+    };
+
+    bool validPos = true;
+
+    for (int j = i-1; j > -1; j--) {
+      if (positions[i].distSqrd(positions[j]) < PARTICLE_RADIUS_SQRD) {
+        validPos = false;
+        break;
+      }
+    }
+
+    if (generation_attempts > numOfParticles + 1000) {
+      printf("Generation of some particles failed! Looks like no space is avialable. Skipped %d particles", numOfParticles - i);
+      break;
+    }
+
+    if (!validPos) {
+      i = i - 1;
+      continue;
+    }
 
     float angle = utils::randomAngle();
 
-    world::create_particle(Vector2{pos_x, pos_y}, Vector2{vec[i]*cos(angle), vec[i]*sin(angle)});
+    world::create_particle(positions[i], Vector2{vec[i]*cos(angle), vec[i]*sin(angle)});
   }
 }
 
