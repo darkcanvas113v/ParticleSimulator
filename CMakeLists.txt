@@ -8,6 +8,7 @@ project(ParticleSimulator VERSION 0.0)
 
 add_subdirectory(libs/flecs)
 add_subdirectory(libs/rtmath)
+add_subdirectory(libs/quadtree)
 
 add_executable(ParticleSimulator
   src/main.cpp
@@ -25,7 +26,8 @@ add_executable(ParticleSimulator
 find_package(SDL2 REQUIRED)
 
 target_link_libraries(ParticleSimulator
-  PRIVATE SDL2 SDL2main SDL2_image
+  PRIVATE SDL2 SDL2main SDL2_image SDL2_ttf
   PRIVATE flecs
   PRIVATE rtmath
+  PRIVATE quadtree
 )

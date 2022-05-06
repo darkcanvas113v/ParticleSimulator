@@ -7,12 +7,15 @@
 #include <math.h>
 #include <vector>
 #include <stdio.h>
+#include <quadtree.h>
 
 void game::init_board(
   int numOfParticles,
   float temperature
 ) {
   world::init();
+
+  quad_tree::init_quad(0, 0, SCREEN_WIDTH);
 
   int generation_attempts = 0;
 

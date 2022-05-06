@@ -2,6 +2,15 @@
 #include "../view/def.h"
 #include <stdio.h>
 #include <math.h>
+#include <quadtree.h>
+
+Rect get_danger_area(Position& p) {
+  float r = PARTICLE_RADIUS * 2;
+  Vector2 v = p.movement_vec;
+  float xs = signbit(v.x);
+  float ys = signbit(v.y);
+  return Rect {p.current.x - r + xs * v.x, p.current.y - r + ys, r * 2 + abs(v.x), r * 2 + abs(v.y)};
+}
 
 void systems::CollisionSystem(flecs::world *w) {
   w->system<Position, Velocity>()
@@ -33,13 +42,22 @@ void systems::CollisionSystem(flecs::world *w) {
    .iter([](flecs::iter& iter, Position* p, Velocity* v) {
      // Collision detection between particles, source: https://www.gamedeveloper.com/programming/pool-hall-lessons-fast-accurate-collision-detection-between-circles-or-spheres
      for (int i = 0; i < iter.count(); i++) {
-       for (int j = i+1; j < iter.count(); j++) {
+       auto close_entities = quad_tree::get_childrens_at(get_danger_area(p[i]));
+
+       int processed_collisions = 0;
+
+       for (Entity* e = close_entities.start; e != close_entities.end; e++) {
+         auto entity = flecs::entity(iter.world(), e->id);
+
+         if (iter.entity(i).raw_id() == e->id) {
+           continue;
+         }
 
          Position p1 = p[i];
-         Position p2 = p[j];
+         Position p2 = *entity.get<Position>();
 
          Velocity v1 = v[i];
-         Velocity v2 = v[j];
+         Velocity v2 = *entity.get<Velocity>();
 
          float d = p1.current.dist(p2.current);
 
@@ -85,10 +103,16 @@ void systems::CollisionSystem(flecs::world *w) {
          float P = (2.0 * (a1 - a2)) / (m1 + m2);
 
          v[i].vec = v1.vec - n * P * m2;
-         v[j].vec = v2.vec + n * P * m2;
+         v2.vec = v2.vec + n * P * m2;
+         entity.set<Velocity>({v2.vec});
 
-         p[i].future = posOnImpact1 + v[i].vec * iter.delta_time() * (1 - ratio);
-         p[j].future = posOnImpact2 + v[j].vec * iter.delta_time() * (1 - ratio);
+         p[i].movement_vec = v[i].vec * iter.delta_time() * (1 - ratio);
+         p[i].future = posOnImpact1 + p[i].movement_vec;
+
+         Vector2 movement_vector2 = v2.vec * iter.delta_time() * (1 - ratio);
+         entity.set<Position>({p2.current, posOnImpact2 + movement_vector2, movement_vector2});
+
+         if (++processed_collisions > 2) break;
        }
      }
    });
