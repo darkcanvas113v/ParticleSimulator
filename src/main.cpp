@@ -12,6 +12,7 @@ void quit() {
 
 const float physicsUpdateInterval = 1 / 60;
 const float renderUpdateInterval = 1 / 60;
+const float consoleUpdateInterval = 1;
 
 int main(int argc, char* args[]) {
   std::srand(time(0));
@@ -20,11 +21,14 @@ int main(int argc, char* args[]) {
     return EXIT_FAILURE;
   }
 
-  game::init_board(6, 50);
+  game::init_board(100, 50);
 
   Uint32 lastRenderUpdateTimeStamp = SDL_GetTicks();
   Uint32 lastPhysicsUpdateTimeStamp = SDL_GetTicks();
+  Uint32 lastConsoleUpdateTimeStamp = SDL_GetTicks();
   float dt = 0;
+
+  Uint64 physicsCalculationTime = 0;
 
   SDL_Event e;
   while(true) {
@@ -37,8 +41,10 @@ int main(int argc, char* args[]) {
 
     dt = (float)(SDL_GetTicks() - lastPhysicsUpdateTimeStamp) / 1000;
     if (dt > physicsUpdateInterval) {
+      auto timeStamp = SDL_GetPerformanceCounter();
       game::physics_loop(dt);
       lastPhysicsUpdateTimeStamp = SDL_GetTicks();
+      physicsCalculationTime = SDL_GetPerformanceCounter() - timeStamp;
     }
 
     dt = (float)(SDL_GetTicks() - lastRenderUpdateTimeStamp) / 1000;
@@ -47,6 +53,13 @@ int main(int argc, char* args[]) {
       game::render_loop();
       rtGE::update();
       lastRenderUpdateTimeStamp = SDL_GetTicks();
+    }
+
+    dt = (float)(SDL_GetTicks() - lastConsoleUpdateTimeStamp) / 1000;
+    if (dt > consoleUpdateInterval) {
+      system("clear");
+      printf("Calculation time: %d\n", physicsCalculationTime);
+      lastConsoleUpdateTimeStamp = SDL_GetTicks();
     }
   }
 
