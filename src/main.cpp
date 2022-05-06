@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include "SDL2/SDL.h"
-#include "view/window.h"
+#include <rtGE.h>
 #include "game.h"
+#include "view/def.h"
 
 void quit() {
-  window::close();
+  rtGE::close();
 }
 
 const float physicsUpdateInterval = 1 / 60;
@@ -15,7 +16,7 @@ const float renderUpdateInterval = 1 / 60;
 int main(int argc, char* args[]) {
   std::srand(time(0));
 
-  if (window::init() == false) {
+  if (rtGE::init(SCREEN_WIDTH, SCREEN_HEIGHT, "Particle simulator") == false) {
     return EXIT_FAILURE;
   }
 
@@ -42,9 +43,9 @@ int main(int argc, char* args[]) {
 
     dt = (float)(SDL_GetTicks() - lastRenderUpdateTimeStamp) / 1000;
     if (dt > renderUpdateInterval) {
-      window::draw();
+      rtGE::draw();
       game::render_loop();
-      window::update();
+      rtGE::update();
       lastRenderUpdateTimeStamp = SDL_GetTicks();
     }
   }

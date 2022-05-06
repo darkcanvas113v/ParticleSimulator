@@ -1,15 +1,18 @@
-#include "window.h"
-#include "def.h"
+#include "rtGE.h"
 
 SDL_Window* mWindow = NULL;
 SDL_Renderer* renderer = NULL;
 
-bool window::init() {
+bool rtGE::init(
+  int screenWidth,
+  int screenHeight,
+  char* label
+) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not be initialized. SDL_Error: %s\n", SDL_GetError());
     return false;
   }
-  mWindow = SDL_CreateWindow("Particle Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+  mWindow = SDL_CreateWindow(label, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
 
   if (mWindow == NULL) {
     printf("Window could not be created. SDL_Error: %s\n", SDL_GetError());
@@ -25,25 +28,26 @@ bool window::init() {
   return true;
 }
 
-void window::draw() {
+void rtGE::draw() {
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
   SDL_RenderClear(renderer);
 }
 
-void window::draw_circle(
+void rtGE::draw_circle(
   float pos_x,
-  float pos_y
+  float pos_y,
+  float D
 ) {
-  SDL_Rect rect = { pos_x - PARTICLE_SIZE / 2, pos_y - PARTICLE_SIZE / 2, PARTICLE_SIZE, PARTICLE_SIZE };
+  SDL_Rect rect = { (int)(pos_x - D / 2), (int)(pos_y - D / 2), (int)D, (int)D };
   SDL_SetRenderDrawColor(renderer, 0xAF, 0x2F, 0x2F, 0xFF);
   SDL_RenderFillRect(renderer, &rect);
 }
 
-void window::update() {
+void rtGE::update() {
   SDL_RenderPresent(renderer);
 }
 
-void window::close() {
+void rtGE::close() {
   SDL_DestroyWindow(mWindow);
   SDL_Quit();
 }

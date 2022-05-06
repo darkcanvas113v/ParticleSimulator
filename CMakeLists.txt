@@ -9,13 +9,12 @@ project(ParticleSimulator VERSION 0.0)
 add_subdirectory(libs/flecs)
 add_subdirectory(libs/rtmath)
 add_subdirectory(libs/quadtree)
+add_subdirectory(libs/rtGE)
 
 add_executable(ParticleSimulator
   src/main.cpp
   src/game.cpp
   src/utils.cpp
-
-  src/view/window.cpp
 
   src/logic/CollisionSystem.cpp
   src/logic/MovementSystem.cpp
@@ -23,11 +22,9 @@ add_executable(ParticleSimulator
   src/data/world.cpp
 )
 
-find_package(SDL2 REQUIRED)
-
 target_link_libraries(ParticleSimulator
-  PRIVATE SDL2 SDL2main SDL2_image SDL2_ttf
   PRIVATE flecs
   PRIVATE rtmath
   PRIVATE quadtree
+  PRIVATE rtGE
 )

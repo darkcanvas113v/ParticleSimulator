@@ -1,6 +1,6 @@
 #include "game.h"
 #include "data/world.h"
-#include "view/window.h"
+#include <rtGE.h>
 #include <stdlib.h>
 #include "view/def.h"
 #include "utils.h"
@@ -67,6 +67,6 @@ void game::render_loop() {
   auto renderables = world::get_renderable_entities();
 
   renderables.each([](flecs::entity e, Position& p, Render r) {
-    window::draw_circle(p.current.x, p.current.y);
+    rtGE::draw_circle(p.current.x, p.current.y, PARTICLE_RADIUS*2);
   });
 }
