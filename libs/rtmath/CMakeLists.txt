@@ -5,7 +5,7 @@ project(rtmath
   VERSION "0.0.1"
 )
 
-add_library(rtmath STATIC src/Vector2.cpp)
+add_library(rtmath STATIC src/Vector2.cpp src/rtmath.cpp)
 
 target_include_directories(rtmath
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src

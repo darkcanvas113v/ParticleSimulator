@@ -39,10 +39,26 @@ float Vector2::length() {
 }
 
 Vector2 Vector2::normalized() {
-  float l = length();
-  return {x / l, y / l};
+  float inv_sqrt = fast_sqrt(lengthSqrd());
+  return {x *inv_sqrt, y *inv_sqrt};
 }
 
 float Vector2::dot(const Vector2& vec) {
   return x * vec.x + y * vec.y;
+}
+
+float fast_sqrt(float val) {
+    long i;
+    float x2, y;
+    const float threehalfs = 1.5F;
+
+    x2 = val * 0.5F;
+    y = val;
+
+    i = * (long*) &y;
+    i = 0x5F375A86 - (i >> 1);
+    y = * (float*) &i;
+    y = y * (threehalfs - (x2 * y * y));
+
+    return y;
 }
