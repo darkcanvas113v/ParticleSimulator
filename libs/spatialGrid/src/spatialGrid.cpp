@@ -1,5 +1,6 @@
 #include "../include/spatialGrid.h"
 #include "rtmath.h"
+#include <math.h>
 
 float gridSize;
 const int GRID_CAPACITY = 10;
@@ -29,8 +30,11 @@ const int BUFFER_SIZE = 100;
 int buffer_i;
 Entity buffer[BUFFER_SIZE];
 
-void spatialGrid::init(float w, float h, float argGridSize, int maxCapacity) {
-  gridSize = argGridSize;
+void spatialGrid::init(float w, float h, int maxNumOfParticles, float maxParticleSize) {
+  gridSize = sqrt(w * h / maxNumOfParticles / 10);
+  if (gridSize < maxParticleSize) gridSize = maxParticleSize;
+  
+  int maxCapacity = round_up(gridSize / maxParticleSize);
 
   rows = round_up(h / gridSize);
   columns = round_up(w / gridSize);

@@ -13,7 +13,7 @@ void game::init_board(
   int numOfParticles,
   float temperature
 ) {
-  spatialGrid::init(SCREEN_WIDTH, SCREEN_HEIGHT, PARTICLE_SIZE * 1, 100);
+  spatialGrid::init(SCREEN_WIDTH, SCREEN_HEIGHT, numOfParticles, PARTICLE_SIZE);
   world::init();
 
   int generation_attempts = 0;
