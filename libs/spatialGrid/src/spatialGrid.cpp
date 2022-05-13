@@ -60,11 +60,11 @@ EntityIterator spatialGrid::get_childrens_around(float x, float y, float radius)
   int left_corner_x = cap_low((x - radius) / gridSize, 0);
   int left_corner_y = cap_low((y - radius) / gridSize, 0);
 
-  int right_corner_x = cap_up((x + radius) / gridSize, columns - 1);
-  int right_corner_y = cap_up((y + radius) / gridSize, rows - 1);
+  int right_corner_x = cap_up((x + radius) / gridSize + 1, columns);
+  int right_corner_y = cap_up((y + radius) / gridSize + 1, rows);
 
-  for (int i = left_corner_x; i < right_corner_x + 1; i++) {
-    for (int j = left_corner_y; j < right_corner_y + 1; j++) {
+  for (int i = left_corner_x; i < right_corner_x; i++) {
+    for (int j = left_corner_y; j < right_corner_y; j++) {
       auto grid = table[j*columns + i];
 
       for (int k = 0; k < grid.size; k++) {
