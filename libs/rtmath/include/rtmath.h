@@ -26,3 +26,6 @@ Vector2 operator*(float n, const Vector2& v1);
 float fast_sqrt(float val);
 
 int round_up(float);
+
+int cap_low(int, int);
+int cap_up(int, int);
