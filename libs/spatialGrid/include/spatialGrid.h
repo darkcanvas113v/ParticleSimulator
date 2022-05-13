@@ -19,5 +19,5 @@ namespace spatialGrid {
 
   void insert(Entity entity);
 
-  EntityIterator get_childrens_around(float x, float y, float radius);
+  EntityIterator get_childrens_around(float x, float y, float p_r, float r_x, float r_y);
 }

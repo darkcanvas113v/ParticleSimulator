@@ -54,14 +54,14 @@ void spatialGrid::insert(Entity entity) {
   table[grid_pos_y * columns + grid_pos_x].insert(entity);
 }
 
-EntityIterator spatialGrid::get_childrens_around(float x, float y, float radius) {
+EntityIterator spatialGrid::get_childrens_around(float x, float y, float p_r, float r_x, float r_y) {
   buffer_i = 0;
 
-  int left_corner_x = cap_low((x - radius) / gridSize, 0);
-  int left_corner_y = cap_low((y - radius) / gridSize, 0);
+  int left_corner_x = cap_low((x - p_r + r_x) / gridSize, 0);
+  int left_corner_y = cap_low((y - p_r + r_y) / gridSize, 0);
 
-  int right_corner_x = cap_up((x + radius) / gridSize + 1, columns);
-  int right_corner_y = cap_up((y + radius) / gridSize + 1, rows);
+  int right_corner_x = cap_up((x + p_r + r_x) / gridSize + 1, columns);
+  int right_corner_y = cap_up((y + p_r + r_y) / gridSize + 1, rows);
 
   for (int i = left_corner_x; i < right_corner_x; i++) {
     for (int j = left_corner_y; j < right_corner_y; j++) {

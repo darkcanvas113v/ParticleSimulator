@@ -36,7 +36,9 @@ void systems::CollisionSystem(flecs::world *w) {
      // Collision detection between particles, source: https://www.gamedeveloper.com/programming/pool-hall-lessons-fast-accurate-collision-detection-between-circles-or-spheres
      for (int i = 0; i < iter.count(); i++) {
        Position p1 = p[i];
-       auto entities = spatialGrid::get_childrens_around(p1.current.x, p1.current.y, PARTICLE_SIZE + PARTICLE_RADIUS);
+       Velocity v1 = v[i];
+
+       auto entities = spatialGrid::get_childrens_around(p1.current.x, p1.current.y, PARTICLE_RADIUS, p1.movement_vec.x, p1.movement_vec.y);
        for (auto e = entities.start; e != entities.end; e++) {
          auto entity = flecs::entity(iter.world(), e->id);
 
@@ -45,8 +47,6 @@ void systems::CollisionSystem(flecs::world *w) {
          }
 
          Position p2 = *entity.get<Position>();
-
-         Velocity v1 = v[i];
          Velocity v2 = *entity.get<Velocity>();
 
          float d = p1.current.dist(p2.current);
