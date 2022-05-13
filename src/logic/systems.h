@@ -6,4 +6,5 @@
 namespace systems {
   void MovementSystem(flecs::world *w);
   void CollisionSystem(flecs::world *w);
+  void AttractionSystem(flecs::world *w);
 }

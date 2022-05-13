@@ -7,15 +7,14 @@
 #include <math.h>
 #include <vector>
 #include <stdio.h>
-#include <quadtree.h>
+#include <spatialGrid.h>
 
 void game::init_board(
   int numOfParticles,
   float temperature
 ) {
+  spatialGrid::init(SCREEN_WIDTH, SCREEN_HEIGHT, PARTICLE_SIZE * 1.5, 100);
   world::init();
-
-  quad_tree::init_quad(0, 0, SCREEN_WIDTH);
 
   int generation_attempts = 0;
 

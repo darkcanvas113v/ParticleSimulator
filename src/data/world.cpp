@@ -5,8 +5,9 @@
 flecs::world mWorld;
 
 void world::init() {
-  systems::CollisionSystem(&mWorld);
+  systems::AttractionSystem(&mWorld);
   systems::MovementSystem(&mWorld);
+  systems::CollisionSystem(&mWorld);
 }
 
 void world::create_particle(

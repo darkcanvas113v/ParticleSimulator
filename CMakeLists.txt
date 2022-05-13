@@ -10,6 +10,7 @@ add_subdirectory(libs/flecs)
 add_subdirectory(libs/rtmath)
 add_subdirectory(libs/quadtree)
 add_subdirectory(libs/rtGE)
+add_subdirectory(libs/spatialGrid)
 
 add_executable(ParticleSimulator
   src/main.cpp
@@ -18,6 +19,7 @@ add_executable(ParticleSimulator
 
   src/logic/CollisionSystem.cpp
   src/logic/MovementSystem.cpp
+  src/logic/AttractionSystem.cpp
 
   src/data/world.cpp
 )
@@ -27,4 +29,5 @@ target_link_libraries(ParticleSimulator
   PRIVATE rtmath
   PRIVATE quadtree
   PRIVATE rtGE
+  PRIVATE spatialGrid
 )

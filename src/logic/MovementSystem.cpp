@@ -1,20 +1,20 @@
 #include "systems.h"
-#include <quadtree.h>
+#include <spatialGrid.h>
 
 void systems::MovementSystem(flecs::world *w) {
   w->system<Position, Velocity>()
     .kind(flecs::PreUpdate)
     .iter([](flecs::iter& iter, Position* p, Velocity* v) {
-      quad_tree::reset();
+      spatialGrid::reset();
       for (int i : iter) {
         auto e = iter.entity(i);
-        quad_tree::insert(Entity {p[i].current.x, p[i].current.y, e.raw_id()});
-        
-        p[i].movement_vec = v[i].vec * iter.delta_time();
+        auto pp = p[i].current;
+        spatialGrid::insert(Entity {pp.x, pp.y, e.raw_id()});
 
+        p[i].movement_vec = v[i].vec * iter.delta_time();
+        
         p[i].future = p[i].current + p[i].movement_vec;
       }
-      quad_tree::build();
    });
 
   w->system<Position, Velocity>()
