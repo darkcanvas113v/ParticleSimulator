@@ -13,7 +13,7 @@ struct EntityIterator {
 
 
 namespace spatialGrid {
-  void init(float w, float h);
+  void init(float w, float h, float argGridSize, int maxCapacity);
 
   void reset();
 
