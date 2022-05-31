@@ -1,8 +1,8 @@
 #include "systems.h"
 #include <spatialGrid.h>
 
-void systems::MovementSystem(flecs::world *w) {
-  w->system<PositionComponent, VelocityComponent>()
+void systems::MovementSystem(const flecs::world& w) {
+  w.system<PositionComponent, VelocityComponent>()
     .kind(flecs::PreUpdate)
     .iter([](flecs::iter& iter, PositionComponent* p, VelocityComponent* v) {
       spatialGrid::reset();
@@ -17,7 +17,7 @@ void systems::MovementSystem(flecs::world *w) {
       }
    });
 
-  w->system<PositionComponent, VelocityComponent>()
+  w.system<PositionComponent, VelocityComponent>()
    .kind(flecs::PostUpdate)
    .iter([](flecs::iter& iter, PositionComponent* p, VelocityComponent* v) {
      for (int i : iter) {

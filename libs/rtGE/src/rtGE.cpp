@@ -36,6 +36,8 @@ SDL_Renderer* renderer = NULL;
 
 TexturePool texturePool;
 
+SDL_Texture* lastFrame;
+
 bool rtGE::init(
   int screenWidth,
   int screenHeight,
@@ -66,6 +68,14 @@ bool rtGE::init(
     printf("Renderer could not be initialized! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
+  
+  lastFrame = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, screenWidth, screenHeight);
+  if( lastFrame == NULL ) {
+      printf( "Unable to create blank texture! SDL Error: %s\n", SDL_GetError() );
+  }
+
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+  SDL_SetTextureBlendMode(lastFrame, SDL_BLENDMODE_BLEND);
 
   return true;
 }
@@ -73,20 +83,20 @@ bool rtGE::init(
 void rtGE::draw() {
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
   SDL_RenderClear(renderer);
-}
-
-void rtGE::draw_circle(
-  float pos_x,
-  float pos_y,
-  float D
-) {
-  SDL_Rect rect = { (int)(pos_x - D / 2), (int)(pos_y - D / 2), (int)D, (int)D };
-  SDL_SetRenderDrawColor(renderer, 0xAF, 0x2F, 0x2F, 0xFF);
-  SDL_RenderFillRect(renderer, &rect);
+  SDL_RenderCopy(renderer, lastFrame, NULL, NULL);
 }
 
 void rtGE::update() {
   SDL_RenderPresent(renderer);
+
+  unsigned char* pixels;
+  int pitch;
+
+  SDL_LockTexture(lastFrame, NULL, (void**)&pixels, &pitch);
+  SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixels, pitch);
+  SDL_UnlockTexture(lastFrame);
+
+  SDL_SetTextureAlphaMod(lastFrame, 180);
 }
 
 void rtGE::close() {

@@ -21,7 +21,7 @@ int main(int argc, char* args[]) {
     return EXIT_FAILURE;
   }
 
-  game::init_board(100, 50);
+  game::init_board(100, 200);
 
   Uint32 lastRenderUpdateTimeStamp = SDL_GetTicks();
   Uint32 lastPhysicsUpdateTimeStamp = SDL_GetTicks();

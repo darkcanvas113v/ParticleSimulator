@@ -17,7 +17,9 @@ add_executable(ParticleSimulator
   src/game.cpp
   src/utils.cpp
 
-  src/logic/CollisionSystem.cpp
+  src/logic/WallCollisionSystem.cpp
+  src/logic/ParticleCollisionSystem.cpp
+  src/logic/PlanetCollisionSystem.cpp
   src/logic/MovementSystem.cpp
   src/logic/AttractionSystem.cpp
 

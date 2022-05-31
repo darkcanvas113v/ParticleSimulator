@@ -3,7 +3,7 @@
 const Vector2 gravity = Vector2 {0, 9.8};
 const float ELECTRIC_ATTRACTION = 10000.0;
 
-void systems::AttractionSystem(flecs::world *w) {
+void systems::AttractionSystem(const flecs::world& w) {
   // w->system<Position, Velocity>()
   //   .kind(flecs::PreUpdate)
   //   .iter([](flecs::iter& iter, Position* p, Velocity* v) {

@@ -7,14 +7,18 @@
 flecs::world mWorld;
 
 void world::init() {
-  systems::AttractionSystem(&mWorld);
-  systems::MovementSystem(&mWorld);
-  systems::CollisionSystem(&mWorld);
+  systems::AttractionSystem(mWorld);
+  systems::MovementSystem(mWorld);
 
+  systems::WallCollisionSystem(mWorld);
+
+  systems::PlanetCollisionSystem(mWorld);
+  systems::ParticleCollisionSystem(mWorld);
+  
   mWorld.entity()
     .add<RenderComponent>()
-    .set<PositionComponent>({Vector2 {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2}})
-    .set<SpriteComponent>({rtGE::get_sprite("circle.png", 300, 300, 150, 150)});
+    .set<PositionComponent>({PLANET_POSITION})
+    .set<SpriteComponent>({rtGE::get_sprite("circle.png", PLANET_SIZE, PLANET_SIZE, PLANET_RADIUS, PLANET_RADIUS)});
 }
 
 void world::create_particle(

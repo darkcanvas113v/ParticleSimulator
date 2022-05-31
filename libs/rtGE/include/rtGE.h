@@ -29,12 +29,6 @@ namespace rtGE {
 
   void close();
 
-  void draw_circle(
-    float pos_x,
-    float pos_y,
-    float D
-  );
-
   void draw_sprite(const Sprite* sprite, float x, float y);
 
   Sprite* get_sprite(std::string name, float w, float h, float origin_x = 0, float origin_y = 0);
