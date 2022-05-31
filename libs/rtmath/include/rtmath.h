@@ -18,6 +18,15 @@ struct Vector2 {
     float dot(const Vector2& vec);
 };
 
+struct Rect {
+    float x, y;
+    float w, h;
+
+    bool is_inside(const Vector2& vec) {
+        return vec.x < x + w && vec.x + w > x && vec.y < y + h && vec.y + h > y;
+    }
+};
+
 Vector2 operator+(const Vector2& v1, const Vector2& v2);
 Vector2 operator-(const Vector2& v1, const Vector2& v2);
 Vector2 operator*(const Vector2& v1, float n);
