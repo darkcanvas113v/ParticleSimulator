@@ -1,7 +1,7 @@
 #pragma once
 #include <rtmath.h>
 
-struct Position {
+struct PositionComponent {
   Vector2 current;
   Vector2 future;
   Vector2 movement_vec;

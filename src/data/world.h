@@ -1,8 +1,9 @@
 #pragma once
 #include <flecs.h>
-#include "components/Position.h"
-#include "components/Velocity.h"
-#include "components/Render.h"
+#include "components/PositionComponent.h"
+#include "components/VelocityComponent.h"
+#include "components/RenderComponent.h"
+#include "components/SpriteComponent.h"
 
 namespace world {
   void init();
@@ -17,6 +18,6 @@ namespace world {
 
   void progress(float dt);
 
-  flecs::query<Position, Render> get_renderable_entities();
+  flecs::query<PositionComponent, RenderComponent, SpriteComponent> get_renderable_entities();
   
 }

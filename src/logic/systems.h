@@ -1,7 +1,8 @@
 #pragma once
 #include <flecs.h>
-#include "../data/components/Position.h"
-#include "../data/components/Velocity.h"
+#include "../data/components/PositionComponent.h"
+#include "../data/components/VelocityComponent.h"
+#include "../data/components/SpriteComponent.h"
 
 namespace systems {
   void MovementSystem(flecs::world *w);

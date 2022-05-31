@@ -6,9 +6,9 @@
 
 // Collision detectinon
 void systems::CollisionSystem(flecs::world *w) {
-  w->system<Position, Velocity>()
+  w->system<PositionComponent, VelocityComponent>()
    .kind(flecs::OnUpdate)
-   .iter([](flecs::iter& iter, Position* p, Velocity* v) {
+   .iter([](flecs::iter& iter, PositionComponent* p, VelocityComponent* v) {
      for (int i : iter) {
        if (p[i].future.x < PARTICLE_RADIUS) {
          v[i].vec.x = -v[i].vec.x;
@@ -30,13 +30,13 @@ void systems::CollisionSystem(flecs::world *w) {
      }
    });
 
-   w->system<Position, Velocity>()
+   w->system<PositionComponent, VelocityComponent>()
    .kind(flecs::OnUpdate)
-   .iter([](flecs::iter& iter, Position* p, Velocity* v) {
+   .iter([](flecs::iter& iter, PositionComponent* p, VelocityComponent* v) {
      // Collision detection between particles, source: https://www.gamedeveloper.com/programming/pool-hall-lessons-fast-accurate-collision-detection-between-circles-or-spheres
      for (int i = 0; i < iter.count(); i++) {
-       Position p1 = p[i];
-       Velocity v1 = v[i];
+       PositionComponent p1 = p[i];
+       VelocityComponent v1 = v[i];
 
        auto entities = spatialGrid::get_childrens_around(p1.current.x, p1.current.y, PARTICLE_RADIUS, p1.movement_vec.x, p1.movement_vec.y);
        for (auto e = entities.start; e != entities.end; e++) {
@@ -46,8 +46,8 @@ void systems::CollisionSystem(flecs::world *w) {
            continue;
          }
 
-         Position p2 = *entity.get<Position>();
-         Velocity v2 = *entity.get<Velocity>();
+         PositionComponent p2 = *entity.get<PositionComponent>();
+         VelocityComponent v2 = *entity.get<VelocityComponent>();
 
          float d = p1.current.dist(p2.current);
 
@@ -93,12 +93,12 @@ void systems::CollisionSystem(flecs::world *w) {
          float P = (2.0 * (a1 - a2)) / (m1 + m2);
 
          v[i].vec = v1.vec - n * P * m2;
-         entity.set<Velocity>({v2.vec + n * P * m2});
+         entity.set<VelocityComponent>({v2.vec + n * P * m2});
 
          p[i].future = posOnImpact1 + v[i].vec * iter.delta_time() * (1 - ratio);
          
          Vector2 movement_vector2 = v2.vec * iter.delta_time() * (1 - ratio);
-         entity.set<Position>({p2.current, posOnImpact2 + movement_vector2, movement_vector2});
+         entity.set<PositionComponent>({p2.current, posOnImpact2 + movement_vector2, movement_vector2});
        }
      }
    });

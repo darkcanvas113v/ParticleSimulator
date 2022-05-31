@@ -1,6 +1,8 @@
 #include "world.h"
 #include "../logic/systems.h"
 #include "../utils.h"
+#include "rtGE.h"
+#include "../view/def.h"
 
 flecs::world mWorld;
 
@@ -15,9 +17,10 @@ void world::create_particle(
   Vector2 velocity
 ) {
   auto e = mWorld.entity()
-    .add<Render>()
-    .set<Position>({pos})
-    .set<Velocity>({velocity});
+    .add<RenderComponent>()
+    .set<PositionComponent>({pos})
+    .set<VelocityComponent>({velocity})
+    .set<SpriteComponent>({rtGE::get_sprite("circle.png", PARTICLE_SIZE, PARTICLE_SIZE)});
 }
 
 void world::clear() {
@@ -34,8 +37,8 @@ void world::progress(float dt) {
   mWorld.progress(dt);
 }
 
-flecs::query<Position, Render> world::get_renderable_entities() {
-  return mWorld.query<Position, Render>();
+flecs::query<PositionComponent, RenderComponent, SpriteComponent> world::get_renderable_entities() {
+  return mWorld.query<PositionComponent, RenderComponent, SpriteComponent>();
 }
 
 

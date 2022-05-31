@@ -1,6 +1,6 @@
 #pragma once
 #include <rtmath.h>
 
-struct Velocity {
+struct VelocityComponent {
   Vector2 vec;
 };

@@ -9,10 +9,16 @@
 #include <stdio.h>
 #include <spatialGrid.h>
 
+void load_resources() {
+  rtGE::load_texture("circle.png");
+}
+
 void game::init_board(
   int numOfParticles,
   float temperature
 ) {
+  load_resources();
+
   spatialGrid::init(SCREEN_WIDTH, SCREEN_HEIGHT, numOfParticles, PARTICLE_SIZE);
   world::init();
 
@@ -25,7 +31,7 @@ void game::init_board(
     generation_attempts++;
 
     positions[i] = Vector2 {
-      (float)(std::rand() % (SCREEN_WIDTH - 2*PARTICLE_SIZE) + PARTICLE_SIZE), 
+      (float)(std::rand() % (SCREEN_WIDTH - 2*PARTICLE_SIZE) + PARTICLE_SIZE),
       (float)(std::rand() % (SCREEN_HEIGHT - 2*PARTICLE_SIZE) + PARTICLE_SIZE)
     };
 
@@ -65,7 +71,7 @@ void game::physics_loop(float dt) {
 void game::render_loop() {
   auto renderables = world::get_renderable_entities();
 
-  renderables.each([](flecs::entity e, Position& p, Render r) {
-    rtGE::draw_circle(p.current.x, p.current.y, PARTICLE_RADIUS*2);
+  renderables.each([](flecs::entity e, PositionComponent& p, RenderComponent& r, SpriteComponent& s) {
+    rtGE::draw_sprite(s.sprite, p.current.x - PARTICLE_RADIUS, p.current.y - PARTICLE_RADIUS);
   });
 }
