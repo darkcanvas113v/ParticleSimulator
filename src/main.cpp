@@ -29,6 +29,7 @@ int main(int argc, char* args[]) {
   float dt = 0;
 
   Uint64 physicsCalculationTime = 0;
+  Uint64 renderTime = 0;
 
   SDL_Event e;
   while(true) {
@@ -49,16 +50,21 @@ int main(int argc, char* args[]) {
 
     dt = (float)(SDL_GetTicks() - lastRenderUpdateTimeStamp) / 1000;
     if (dt > renderUpdateInterval) {
+      auto timeStamp = SDL_GetPerformanceCounter();
+
       rtGE::draw();
       game::render_loop();
       rtGE::update();
+      
       lastRenderUpdateTimeStamp = SDL_GetTicks();
+      renderTime = SDL_GetPerformanceCounter() - timeStamp;
     }
 
     dt = (float)(SDL_GetTicks() - lastConsoleUpdateTimeStamp) / 1000;
     if (dt > consoleUpdateInterval) {
       system("clear");
       printf("Calculation time: %d\n", physicsCalculationTime);
+      printf("Render time: %d\n", renderTime);
       lastConsoleUpdateTimeStamp = SDL_GetTicks();
     }
   }

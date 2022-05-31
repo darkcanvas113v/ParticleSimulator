@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <spatialGrid.h>
 
+flecs::query<PositionComponent, RenderComponent, SpriteComponent> renderables;
+
 void load_resources() {
   rtGE::load_texture("circle.png");
 }
@@ -58,6 +60,8 @@ void game::init_board(
 
     world::create_particle(positions[i], Vector2{vec[i]*cos(angle), vec[i]*sin(angle)});
   }
+
+  renderables = world::get_renderable_entities();
 }
 
 void game::clear_board() {
@@ -69,8 +73,6 @@ void game::physics_loop(float dt) {
 }
 
 void game::render_loop() {
-  auto renderables = world::get_renderable_entities();
-
   renderables.each([](flecs::entity e, PositionComponent& p, RenderComponent& r, SpriteComponent& s) {
     rtGE::draw_sprite(s.sprite, p.current.x - PARTICLE_RADIUS, p.current.y - PARTICLE_RADIUS);
   });
