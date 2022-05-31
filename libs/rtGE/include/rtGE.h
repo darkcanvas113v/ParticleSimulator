@@ -5,9 +5,13 @@ class Sprite {
 public:
   int texture_id;
   int w, h;
+  int origin_x, origin_y;
 
-  Sprite(int texture_id, float w, float h) {
+  Sprite(int texture_id, float w, float h, float origin_x = 0, float origin_y = 0) {
     this->texture_id = texture_id;
+
+    this->origin_x = origin_x;
+    this->origin_y = origin_y;
 
     this->w = w;
     this->h = h;
@@ -33,7 +37,7 @@ namespace rtGE {
 
   void draw_sprite(const Sprite* sprite, float x, float y);
 
-  Sprite* get_sprite(std::string name, float w, float h);
+  Sprite* get_sprite(std::string name, float w, float h, float origin_x = 0, float origin_y = 0);
 
   void load_texture(std::string name);
 }

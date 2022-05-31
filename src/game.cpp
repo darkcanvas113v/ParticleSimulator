@@ -74,6 +74,6 @@ void game::physics_loop(float dt) {
 
 void game::render_loop() {
   renderables.each([](flecs::entity e, PositionComponent& p, RenderComponent& r, SpriteComponent& s) {
-    rtGE::draw_sprite(s.sprite, p.current.x - PARTICLE_RADIUS, p.current.y - PARTICLE_RADIUS);
+    rtGE::draw_sprite(s.sprite, p.current.x, p.current.y);
   });
 }

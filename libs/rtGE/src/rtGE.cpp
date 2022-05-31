@@ -114,8 +114,8 @@ void rtGE::load_texture(std::string path) {
 
 void rtGE::draw_sprite(const Sprite* sprite, float x, float y) {
   SDL_Rect rect;
-  rect.x = x;
-  rect.y = y;
+  rect.x = x - sprite->origin_x;
+  rect.y = y - sprite->origin_y;
 
   rect.w = sprite->w;
   rect.h = sprite->h;
@@ -123,6 +123,6 @@ void rtGE::draw_sprite(const Sprite* sprite, float x, float y) {
   SDL_RenderCopy(renderer, texturePool.get_texture(sprite->texture_id), NULL, &rect);
 }
 
-Sprite* rtGE::get_sprite(std::string name, float w, float h) {
-  return new Sprite(texturePool.get_texture_id(name), w, h);
+Sprite* rtGE::get_sprite(std::string name, float w, float h, float origin_x, float origin_y) {
+  return new Sprite(texturePool.get_texture_id(name), w, h, origin_x, origin_y);
 }

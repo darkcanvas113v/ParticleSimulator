@@ -10,6 +10,11 @@ void world::init() {
   systems::AttractionSystem(&mWorld);
   systems::MovementSystem(&mWorld);
   systems::CollisionSystem(&mWorld);
+
+  mWorld.entity()
+    .add<RenderComponent>()
+    .set<PositionComponent>({Vector2 {SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2}})
+    .set<SpriteComponent>({rtGE::get_sprite("circle.png", 300, 300, 150, 150)});
 }
 
 void world::create_particle(
@@ -20,7 +25,7 @@ void world::create_particle(
     .add<RenderComponent>()
     .set<PositionComponent>({pos})
     .set<VelocityComponent>({velocity})
-    .set<SpriteComponent>({rtGE::get_sprite("circle.png", PARTICLE_SIZE, PARTICLE_SIZE)});
+    .set<SpriteComponent>({rtGE::get_sprite("circle.png", PARTICLE_SIZE, PARTICLE_SIZE, PARTICLE_RADIUS, PARTICLE_RADIUS)});
 }
 
 void world::clear() {
