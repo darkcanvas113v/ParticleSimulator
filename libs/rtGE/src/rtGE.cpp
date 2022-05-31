@@ -87,8 +87,6 @@ void rtGE::draw() {
 }
 
 void rtGE::update() {
-  SDL_RenderPresent(renderer);
-
   unsigned char* pixels;
   int pitch;
 
@@ -96,7 +94,9 @@ void rtGE::update() {
   SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_RGBA8888, pixels, pitch);
   SDL_UnlockTexture(lastFrame);
 
-  SDL_SetTextureAlphaMod(lastFrame, 180);
+  SDL_RenderPresent(renderer);
+
+  SDL_SetTextureAlphaMod(lastFrame, 200);
 }
 
 void rtGE::close() {

@@ -7,8 +7,8 @@
 flecs::world mWorld;
 
 void world::init() {
-  systems::AttractionSystem(mWorld);
   systems::MovementSystem(mWorld);
+  systems::AttractionSystem(mWorld);
 
   systems::WallCollisionSystem(mWorld);
 

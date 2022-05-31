@@ -10,6 +10,7 @@
 #include <spatialGrid.h>
 
 flecs::query<PositionComponent, RenderComponent, SpriteComponent> renderables;
+Rect screenViewport = Rect {-PARTICLE_RADIUS, -PARTICLE_RADIUS, SCREEN_WIDTH + PARTICLE_RADIUS, SCREEN_HEIGHT + PARTICLE_RADIUS};
 
 void load_resources() {
   rtGE::load_texture("circle.png");
@@ -74,6 +75,7 @@ void game::physics_loop(float dt) {
 
 void game::render_loop() {
   renderables.each([](flecs::entity e, PositionComponent& p, RenderComponent& r, SpriteComponent& s) {
-    rtGE::draw_sprite(s.sprite, p.current.x, p.current.y);
+    if (screenViewport.is_inside(p.current))
+      rtGE::draw_sprite(s.sprite, p.current.x, p.current.y);
   });
 }
