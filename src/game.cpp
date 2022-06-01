@@ -41,7 +41,11 @@ void game::init_board(
     bool validPos = true;
 
     for (int j = i-1; j > -1; j--) {
-      if (positions[i].distSqrd(positions[j]) < PARTICLE_RADIUS_SQRD) {
+      if (positions[i].distSqrd(positions[j]) < PARTICLE_SIZE_SQRD) {
+        validPos = false;
+        break;
+      }
+      if (positions[i].distSqrd(PLANET_POSITION) < PLAN_PART_RADIUS_SUM_SQRD) {
         validPos = false;
         break;
       }
