@@ -19,7 +19,7 @@ public:
 };
 
 namespace rtGE {
-  bool init(int screenWidth, int screenHeight, char* label);
+  bool init(int screenWidth, int screenHeight, char* label, bool motionBlurOn = true);
 
   void draw();
 
