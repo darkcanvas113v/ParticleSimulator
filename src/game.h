@@ -7,4 +7,6 @@ namespace game {
 
   void physics_loop(float dt);
   void render_loop();
+
+  void print_to_command_line();
 }

@@ -1,45 +1,20 @@
 #include "rtGE.h"
-#include "SDL2/SDL_image.h"
-#include <stdexcept>
-#include <unordered_map>
 
 const std::string RES_PATH = "resources/";
 const std::string IMAGES_PATH = RES_PATH + "images/";
 
-const int MAX_TEXTURE_POOL_SIZE = 100;
-struct TexturePool {
-  SDL_Texture* pool[MAX_TEXTURE_POOL_SIZE];
-  std::unordered_map<std::string, int> name_to_id_map;
-
-  int size = 0;
-
-  void put_texture(SDL_Texture* texture, std::string name) {
-    if (size == MAX_TEXTURE_POOL_SIZE) {
-      throw std::overflow_error("Texture pool overflow!");
-    }
-
-    name_to_id_map[name] = size;
-    pool[size] = texture;
-  }
-
-  SDL_Texture* get_texture(int texture_id) {
-    return pool[texture_id];
-  }
-
-  int get_texture_id(std::string name) {
-    return name_to_id_map[name];
-  }
-};
-
 SDL_Window* mWindow = NULL;
 SDL_Renderer* renderer = NULL;
 
-TexturePool texturePool;
+SDL_Renderer* getRenderer() {
+  return renderer;
+}
 
 bool rtGE::init(
   int screenWidth,
   int screenHeight,
-  char* label
+  char* label,
+  bool motionBlurOn
 ) {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not be initialized. SDL_Error: %s\n", SDL_GetError());
@@ -66,27 +41,10 @@ bool rtGE::init(
     printf("Renderer could not be initialized! SDL_Error: %s\n", SDL_GetError());
     return false;
   }
+  
+  initGraphicLayers(screenWidth, screenHeight, motionBlurOn);
 
   return true;
-}
-
-void rtGE::draw() {
-  SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-  SDL_RenderClear(renderer);
-}
-
-void rtGE::draw_circle(
-  float pos_x,
-  float pos_y,
-  float D
-) {
-  SDL_Rect rect = { (int)(pos_x - D / 2), (int)(pos_y - D / 2), (int)D, (int)D };
-  SDL_SetRenderDrawColor(renderer, 0xAF, 0x2F, 0x2F, 0xFF);
-  SDL_RenderFillRect(renderer, &rect);
-}
-
-void rtGE::update() {
-  SDL_RenderPresent(renderer);
 }
 
 void rtGE::close() {
@@ -109,7 +67,7 @@ void rtGE::load_texture(std::string path) {
 
   SDL_FreeSurface(image);
 
-  texturePool.put_texture(texture, path);
+  save_texture(texture, path);
 }
 
 void rtGE::draw_sprite(const Sprite* sprite, float x, float y) {
@@ -120,9 +78,9 @@ void rtGE::draw_sprite(const Sprite* sprite, float x, float y) {
   rect.w = sprite->w;
   rect.h = sprite->h;
 
-  SDL_RenderCopy(renderer, texturePool.get_texture(sprite->texture_id), NULL, &rect);
+  SDL_RenderCopy(renderer, get_texture(sprite->texture_id), NULL, &rect);
 }
 
 Sprite* rtGE::get_sprite(std::string name, float w, float h, float origin_x, float origin_y) {
-  return new Sprite(texturePool.get_texture_id(name), w, h, origin_x, origin_y);
+  return new Sprite(get_texture_id(name), w, h, origin_x, origin_y);
 }

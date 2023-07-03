@@ -5,7 +5,11 @@ project(rtGE
   VERSION "0.0.1"
 )
 
-add_library(rtGE STATIC src/rtGE.cpp)
+add_library(rtGE STATIC 
+  src/rtGE.cpp
+  src/texture_store.cpp
+  src/GraphicLayers.cpp
+)
 
 find_package(SDL2 REQUIRED)
 

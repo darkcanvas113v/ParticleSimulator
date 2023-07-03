@@ -19,7 +19,7 @@ public:
 };
 
 namespace rtGE {
-  bool init(int screenWidth, int screenHeight, char* label);
+  bool init(int screenWidth, int screenHeight, char* label, bool motionBlurOn = true);
 
   void draw();
 
@@ -28,12 +28,6 @@ namespace rtGE {
   void update();
 
   void close();
-
-  void draw_circle(
-    float pos_x,
-    float pos_y,
-    float D
-  );
 
   void draw_sprite(const Sprite* sprite, float x, float y);
 

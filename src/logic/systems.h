@@ -5,7 +5,12 @@
 #include "../data/components/SpriteComponent.h"
 
 namespace systems {
-  void MovementSystem(flecs::world *w);
-  void CollisionSystem(flecs::world *w);
-  void AttractionSystem(flecs::world *w);
+  void MovementSystem(const flecs::world& w);
+  
+  void ParticleCollisionSystem(const flecs::world& w);
+  void WallCollisionSystem(const flecs::world& w);
+  
+  void PlanetCollisionSystem(const flecs::world& w);
+
+  void AttractionSystem(const flecs::world& w);
 }
