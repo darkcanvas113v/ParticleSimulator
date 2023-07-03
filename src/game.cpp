@@ -83,3 +83,7 @@ void game::render_loop() {
       rtGE::draw_sprite(s.sprite, p.current.x, p.current.y);
   });
 }
+
+void game::print_to_command_line() {
+  printf("Total energy: %f\n", world::get_total_energy());
+}

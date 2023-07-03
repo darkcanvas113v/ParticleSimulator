@@ -10,18 +10,18 @@ void quit() {
   rtGE::close();
 }
 
-const float physicsUpdateInterval = 1 / 60;
+const float physicsUpdateInterval = 1 / 120;
 const float renderUpdateInterval = 1 / 60;
 const float consoleUpdateInterval = 1;
 
 int main(int argc, char* args[]) {
   std::srand(time(0));
 
-  if (rtGE::init(SCREEN_WIDTH, SCREEN_HEIGHT, "Particle simulator") == false) {
+  if (rtGE::init(SCREEN_WIDTH, SCREEN_HEIGHT, "Particle simulator", true) == false) {
     return EXIT_FAILURE;
   }
 
-  game::init_board(100, 20);
+  game::init_board(1, 100);
 
   Uint32 lastRenderUpdateTimeStamp = SDL_GetTicks();
   Uint32 lastPhysicsUpdateTimeStamp = SDL_GetTicks();
@@ -65,6 +65,8 @@ int main(int argc, char* args[]) {
       system("clear");
       printf("Calculation time: %d\n", physicsCalculationTime);
       printf("Render time: %d\n", renderTime);
+
+      game::print_to_command_line();
       lastConsoleUpdateTimeStamp = SDL_GetTicks();
     }
   }

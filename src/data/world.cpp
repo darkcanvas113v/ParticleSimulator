@@ -8,17 +8,17 @@ flecs::world mWorld;
 
 void world::init() {
   systems::MovementSystem(mWorld);
-  systems::AttractionSystem(mWorld);
+  // systems::AttractionSystem(mWorld);
 
   systems::WallCollisionSystem(mWorld);
 
   systems::PlanetCollisionSystem(mWorld);
   systems::ParticleCollisionSystem(mWorld);
   
-  mWorld.entity()
-    .add<RenderComponent>()
-    .set<PositionComponent>({PLANET_POSITION})
-    .set<SpriteComponent>({rtGE::get_sprite("circle.png", PLANET_SIZE, PLANET_SIZE, PLANET_RADIUS, PLANET_RADIUS)});
+  // mWorld.entity()
+  //   .add<RenderComponent>()
+  //   .set<PositionComponent>({PLANET_POSITION})
+  //   .set<SpriteComponent>({rtGE::get_sprite("circle.png", PLANET_SIZE, PLANET_SIZE, PLANET_RADIUS, PLANET_RADIUS)});
 }
 
 void world::create_particle(
@@ -50,4 +50,17 @@ flecs::query<PositionComponent, RenderComponent, SpriteComponent> world::get_ren
   return mWorld.query<PositionComponent, RenderComponent, SpriteComponent>();
 }
 
+float world::get_total_energy() {
+  auto entities = mWorld.query<VelocityComponent>();
+
+  entities.iter([](flecs::iter& iter, VelocityComponent* v) {
+    float total_energy = 0;
+    for (int i : iter) {
+      auto velocity = v[i].vec.length();
+      total_energy += velocity * velocity / 2;
+    }
+
+    return total_energy;
+  });
+}
 

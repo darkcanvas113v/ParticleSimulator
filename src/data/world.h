@@ -19,5 +19,7 @@ namespace world {
   void progress(float dt);
 
   flecs::query<PositionComponent, RenderComponent, SpriteComponent> get_renderable_entities();
+
+  float get_total_energy();
   
 }
